@@ -1,5 +1,6 @@
 from subtract import pyCloudCompare as pycc
 from typing import List
+import os
 
 
 def subtract_clouds(cloud1_path: str, cloud2_path: str, output_path: str,
@@ -36,4 +37,36 @@ def subtract_clouds(cloud1_path: str, cloud2_path: str, output_path: str,
     cmd.save_clouds(output_path + r"\filtered.las")  # Save filtered cloud
     cmd.auto_save(True)
     cmd.extract_cc(8, 100)  # Extract Connected Components from the filtered cloud, and save them
+    cmd.execute()
+
+
+def merge_clouds(clouds_path: str, output_path: str, merged_cloud_name: str, global_shift: List[int]) -> None:
+    """
+    Merge multiple clouds into one.
+    :param clouds_path: path to the folder containing the clouds to merge
+    :param output_path: path to the output folder
+    :param merged_cloud_name: name of the merged cloud
+    :param global_shift: shift to apply to the clouds before merging
+    :return: None. The result is saved in the output folder.
+    """
+    # Initialize
+    cli = pycc.CloudCompareCLI()
+    cmd = cli.new_command()
+    cmd.silent()  # Disable console
+    cmd.log_file(output_path + r"\log.txt")
+    cmd.auto_save(False)
+    cmd.cloud_export_format("LAS")
+
+    # Open all clouds
+    i = 0
+    for cloud in os.listdir(clouds_path):
+        if cloud.endswith(".las"):
+            cmd.open(clouds_path + "\\" + cloud, global_shift=global_shift)
+        i += 1
+        print("Opened " + str(i) + " clouds")
+    # Merge clouds
+    cmd.merge_clouds()
+    # Save merged cloud
+    cmd.save_clouds(output_path + "\\" + merged_cloud_name + ".las")
+    print(cmd)
     cmd.execute()
