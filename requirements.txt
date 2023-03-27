@@ -3,3 +3,4 @@ laspy
 numpy
 pandas
 matplotlib
+scikit-learn
