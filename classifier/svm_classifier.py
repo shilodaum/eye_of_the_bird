@@ -14,7 +14,7 @@ def svm_model():
     Y = dataset['target'] # output, laybel.
 
     # split the dataset to train and test. 0.8/0.2.
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, Z, train_size=0.8)
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.8)
 
     C_const = 1 # const that determines
 
