@@ -7,7 +7,8 @@ import numpy as np
 
 from create_dataset import get_dataset
 
-def svm_model():
+
+def svm_model():  # TODO - add docstring
     dataset = get_dataset()
 
     X = dataset['data'] # input, features.
