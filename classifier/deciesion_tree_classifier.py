@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 from create_dataset import get_dataset
 
-
+# TODO - fix error
 def decision_tree_model():
 
 # loading dataset
