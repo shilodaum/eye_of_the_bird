@@ -8,20 +8,24 @@ from create_dataset import get_dataset
 
 # TODO - fix error
 def decision_tree_model():
+    """
 
-# loading dataset
-dataset = get_dataset()
+    :return:
+    """
 
-X = dataset['data'] # input, features.
-Y = dataset['target'] # output, laybel.
+    # loading dataset
+    dataset = get_dataset()
 
-# dividing X, y into train and test data
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 0)
+    X = dataset['data'] # input, features.
+    Y = dataset['target'] # output, laybel.
 
-# training a DescisionTreeClassifier
+    # dividing X, y into train and test data
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 0)
 
-dtree_model = DecisionTreeClassifier(max_depth = 2).fit(X_train, Y_train)
-dtree_predictions = dtree_model.predict(X_test)
+    # training a DescisionTreeClassifier
 
-# creating a confusion matrix
-cm = confusion_matrix(Y_test, dtree_predictions)
+    dtree_model = DecisionTreeClassifier(max_depth = 2).fit(X_train, Y_train)
+    dtree_predictions = dtree_model.predict(X_test)
+
+    # creating a confusion matrix
+    cm = confusion_matrix(Y_test, dtree_predictions)
