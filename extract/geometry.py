@@ -13,7 +13,7 @@ def find_min_bounding_rectangle(points, num_angles=180, quartile=0.01):
     # iterate over angles, and find angle such that the width is minimal
     min_width = np.inf
     min_angle = 0
-    for angle in np.arange(0, np.pi / 2, np.pi / num_angles):
+    for angle in np.arange(0, np.pi, np.pi / num_angles):
         # rotate the points
         rotated_points = rotate(points, angle)
         # find the width and height
@@ -112,3 +112,4 @@ def get_angle_pca(points):
     pca_main_component = get_pca_main_axis(points)
     angle = np.arctan2(pca_main_component[1], pca_main_component[0])
     return angle
+
