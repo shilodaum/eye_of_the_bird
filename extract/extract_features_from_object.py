@@ -22,6 +22,13 @@ LABEL = "label"
 
 
 def extract_features_from_object(object_file_path, output_file_path, label=None):
+    """
+    Extract features from the object file and save them to the output file
+    :param object_file_path: the path to the object file
+    :param output_file_path: the path to the output file
+    :param label: the label of the object
+    :return: None
+    """
     laspy_file = laspy.read(object_file_path)
 
     points = laspy_file.xyz
@@ -54,18 +61,24 @@ def extract_features_from_object(object_file_path, output_file_path, label=None)
 
 
 def main():
-    i = 0
+    """
+    Extract features from all the objects in the input folder and save them to the output folder
+    """
+    # counter
+    file_counter = 0
     for obj_type in os.listdir(IN_FOLDER):
+        # iterate all folders
         if isdir(pjoin(IN_FOLDER, obj_type)):
             obj_type_path = pjoin(IN_FOLDER, obj_type)
+            # iterate all files
             for obj in os.listdir(obj_type_path):
                 if obj.endswith(".las"):
+                    # extract features from the object
                     obj_path = pjoin(obj_type_path, obj)
                     print(obj_path)
-                    json_path = f"obj{str(i).zfill(3)}.json"
+                    json_path = f"obj{str(file_counter).zfill(3)}.json"
                     extract_features_from_object(obj_path, pjoin(OUT_FOLDER, json_path), obj_type)
-                    i += 1
-
+                    file_counter += 1
 
 if __name__ == '__main__':
     main()
