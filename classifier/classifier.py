@@ -46,3 +46,11 @@ def train_model():
     plt.ylabel('Actual')
     plt.tight_layout()
     plt.show()
+
+
+def main():
+    train_model()
+
+
+if __name__ == '__main__':
+    main()

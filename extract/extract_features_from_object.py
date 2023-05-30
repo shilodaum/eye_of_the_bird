@@ -53,8 +53,9 @@ def extract_features_from_object(object_file_path, output_file_path, label=None)
         FEATURE_HEIGHT_RATIO: z_diff / (x_diff * y_diff),
         FEATURE_DENSITY: num_points / volume,
         FEATURE_AERIAL_DENSITY: num_points / area,
-        LABEL: label
     }
+    if label is not None:
+        data[LABEL] = label
 
     with open(output_file_path, "w") as f:
         json.dump(data, f, indent=4)
