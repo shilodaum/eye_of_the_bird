@@ -1,6 +1,7 @@
 {
-    "label": "table",
-    "feature_x": 0.46418362356956855,
-    "feature_y": 0.59022004330087,
-    "feature_z": 0.2734999999999559
+    "label": "barrel",
+    "feature_x": 0.5414799292855005,
+    "feature_y": 0.5835615004970056,
+    "feature_z": 0.4292499999999677,
+    "feature_n_points": 4742
 }

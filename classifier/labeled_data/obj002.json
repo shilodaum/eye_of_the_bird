@@ -1,6 +1,7 @@
 {
-    "label": "box",
-    "feature_x": 0.4492714991448208,
-    "feature_y": 0.5873876996805745,
-    "feature_z": 0.2540000000000191
+    "label": "barrel",
+    "feature_x": 0.5099523621539365,
+    "feature_y": 0.5473514939668336,
+    "feature_z": 0.38324999999997544,
+    "feature_n_points": 4250
 }

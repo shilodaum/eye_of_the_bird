@@ -1,6 +1,7 @@
 {
-    "label": "person",
-    "feature_x": 0.6418343356487577,
-    "feature_y": 0.7043161352713546,
-    "feature_z": 1.7347500000000196
+    "label": "barrel",
+    "feature_x": 0.4857813069670788,
+    "feature_y": 0.5205378326867547,
+    "feature_z": 0.3362500000000068,
+    "feature_n_points": 4651
 }

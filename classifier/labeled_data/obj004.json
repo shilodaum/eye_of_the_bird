@@ -1,6 +1,7 @@
 {
-    "label": "car",
-    "feature_x": 2.2338039863460386,
-    "feature_y": 4.884938845800509,
-    "feature_z": 3.0440000000000396
+    "label": "barrel",
+    "feature_x": 0.33279078151547004,
+    "feature_y": 0.35298232187781936,
+    "feature_z": 0.23099999999999454,
+    "feature_n_points": 844
 }

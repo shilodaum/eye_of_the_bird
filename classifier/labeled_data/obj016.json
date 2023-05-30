@@ -1,6 +1,7 @@
 {
-    "label": "table",
-    "feature_x": 0.5209306292349921,
-    "feature_y": 0.5913670934570605,
-    "feature_z": 0.25625000000002274
+    "label": "box",
+    "feature_x": 0.42995674237650705,
+    "feature_y": 0.5337901678556827,
+    "feature_z": 0.26774999999997817,
+    "feature_n_points": 6902
 }

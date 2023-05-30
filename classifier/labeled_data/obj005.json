@@ -1,6 +1,7 @@
 {
-    "label": "chair",
-    "feature_x": 0.49744119775796325,
-    "feature_y": 0.9819782228679246,
-    "feature_z": 0.7527499999999918
+    "label": "barrel",
+    "feature_x": 0.46656669622334046,
+    "feature_y": 0.4677335245847414,
+    "feature_z": 0.40075000000001637,
+    "feature_n_points": 1830
 }

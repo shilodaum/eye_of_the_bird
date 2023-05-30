@@ -1,6 +1,7 @@
 {
-    "label": "cylinder_on_tripod",
-    "feature_x": 0.41185697040918134,
-    "feature_y": 0.6664507987486137,
-    "feature_z": 0.5197499999999877
+    "label": "barrel",
+    "feature_x": 0.4741533125219544,
+    "feature_y": 0.5569504434862926,
+    "feature_z": 0.41149999999998954,
+    "feature_n_points": 7874
 }
