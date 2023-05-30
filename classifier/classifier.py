@@ -27,7 +27,7 @@ def svm_model():
     Y = dataset['target']  # output, label.
 
     # split the dataset to train and test. 0.8/0.2.
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.5, stratify=Y)
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.3, stratify=Y)
 
     C_const = 1.0  # const that determines how much you want to avoid misclassification.
     # For large values of C, the optimization will choose a smaller-margin hyperplane
@@ -60,6 +60,8 @@ def svm_model():
     # print(len(set(Y_test)))
 
     cm = confusion_matrix(Y_test, y_pred, labels=labels)
+    #normalize rows
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     # cm_poly = confusion_matrix(Y_test, poly_pred)
     # cm_rbf = confusion_matrix(Y_test, rbf_pred, labels=labels)
     # cm_rf = confusion_matrix(Y_test, rf_pred, labels=labels)
