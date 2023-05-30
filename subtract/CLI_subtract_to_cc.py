@@ -1,19 +1,64 @@
 from subtract import pyCloudCompare as pycc
 from typing import List
 import os
+import laspy
+import numpy as np
+import glob
 
 
-def subtract_clouds(cloud1_path: str, cloud2_path: str, output_path: str,
-                    bounds: List[int], global_shift: List[int]) -> None:
+def get_intersection_bounds(cloud1_path: str, cloud2_path: str) -> List[float]:
     """
-    Subtract 2 clouds, filter the result, and extract connected components from the result.
+    Get the intersection bounds of 2 clouds.
     :param cloud1_path: path to the first cloud
     :param cloud2_path: path to the second cloud
-    :param output_path: path to the output folder
-    :param bounds: bounds of the area to crop the clouds to
-    :param global_shift: shift to apply to the clouds before cropping
+    :return: the intersection bounds of the 2 clouds
+    """
+    # Load the first LAS file
+    las1 = laspy.read(cloud1_path)
+
+    # Load the second LAS file
+    las2 = laspy.read(cloud2_path)
+
+    # Get the bounds of the first cloud
+    min_x_1 = las1.header.x_min
+    min_y_1 = las1.header.y_min
+    min_z_1 = las1.header.z_min
+    max_x_1 = las1.header.x_max
+    max_y_1 = las1.header.y_max
+    max_z_1 = las1.header.z_max
+
+    # Get the bounds of the second cloud
+    min_x_2 = las2.header.x_min
+    min_y_2 = las2.header.y_min
+    min_z_2 = las2.header.z_min
+    max_x_2 = las2.header.x_max
+    max_y_2 = las2.header.y_max
+    max_z_2 = las2.header.z_max
+
+    # Get the intersection bounds
+    min_x = max(min_x_1, min_x_2)
+    min_y = max(min_y_1, min_y_2)
+    min_z = max(min_z_1, min_z_2)
+    max_x = min(max_x_1, max_x_2)
+    max_y = min(max_y_1, max_y_2)
+    max_z = min(max_z_1, max_z_2)
+
+    return [min_x, min_y, min_z, max_x, max_y, max_z]
+
+
+def subtract_clouds(global_shift: List[int], bounds: List[int] = None) -> None:
+    """
+    Subtract 2 clouds, filter the result, and extract connected components from the result.
+    :param global_shift: shift to apply to the clouds before subtracting
+    :param bounds: bounds of the area to crop the clouds to. If None, the intersection bounds of the 2 clouds are used.
     :return: None. The result is saved in the output folder.
     """
+    input_path = os.path.join(os.path.dirname(os.getcwd()), r'data\scans')
+    output_path = os.path.join(os.path.dirname(os.getcwd()), r'data\objects')
+    clouds = glob.glob(os.path.join(input_path, '*.las'))
+    cloud1_path = clouds[0]
+    cloud2_path = clouds[1]
+
     # Initialize
     cli = pycc.CloudCompareCLI()
     cmd = cli.new_command()
@@ -21,6 +66,10 @@ def subtract_clouds(cloud1_path: str, cloud2_path: str, output_path: str,
     cmd.log_file(output_path + r"\log.txt")
     cmd.auto_save(False)
     cmd.cloud_export_format("LAS")
+
+    if bounds is None:
+        bounds = get_intersection_bounds(cloud1_path, cloud2_path)
+
     shifted_bounds = [bounds[0] + global_shift[0], bounds[1] + global_shift[1], bounds[2] + global_shift[2],
                       bounds[3] + global_shift[0], bounds[4] + global_shift[1], bounds[5] + global_shift[2]]
     # Open 2 clouds
@@ -38,6 +87,10 @@ def subtract_clouds(cloud1_path: str, cloud2_path: str, output_path: str,
     cmd.auto_save(True)
     cmd.extract_cc(8, 100)  # Extract Connected Components from the filtered cloud, and save them
     cmd.execute()
+
+    os.remove(output_path + r"\subtracted.las")
+    os.remove(output_path + r"\reference.las")
+    os.remove(output_path + r"\filtered.las")
 
 
 def merge_clouds(clouds_path: str, output_path: str, merged_cloud_name: str, global_shift: List[int]) -> None:
@@ -70,3 +123,5 @@ def merge_clouds(clouds_path: str, output_path: str, merged_cloud_name: str, glo
     cmd.save_clouds(output_path + "\\" + merged_cloud_name + ".las")
     print(cmd)
     cmd.execute()
+
+
