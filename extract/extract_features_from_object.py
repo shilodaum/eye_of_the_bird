@@ -80,5 +80,6 @@ def main():
                     extract_features_from_object(obj_path, pjoin(OUT_FOLDER, json_path), obj_type)
                     file_counter += 1
 
+
 if __name__ == '__main__':
     main()
