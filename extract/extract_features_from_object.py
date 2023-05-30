@@ -12,12 +12,14 @@ OUT_FOLDER = r"../data/features"
 FEATURE_X = "feature_x"
 FEATURE_Y = "feature_y"
 FEATURE_Z = "feature_z"
+FEATURE_AVG_INTENSITY = "feature_avg_intensity"
 LABEL = "label"
 
 
 def extract_features_from_object(object_file_path, output_file_path, label=None):
     laspy_file = laspy.read(object_file_path)
     points = laspy_file.xyz
+    average_intensity = np.mean(laspy_file.intensity)
     points = geometry.get_center(points)
 
     points = geometry.remove_outliers(points)
@@ -28,6 +30,7 @@ def extract_features_from_object(object_file_path, output_file_path, label=None)
         FEATURE_X: x_diff,
         FEATURE_Y: y_diff,
         FEATURE_Z: geometry.get_z_diff(points),
+        FEATURE_AVG_INTENSITY: average_intensity,
         LABEL: label
     }
 
