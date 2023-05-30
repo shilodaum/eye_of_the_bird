@@ -1,4 +1,5 @@
-from svm_classifier import svm_model
+from classifier import svm_model
+
 def main():
     """
 
