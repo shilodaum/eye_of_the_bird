@@ -2,6 +2,17 @@ import json
 import os
 import glob
 
+FEATURE_X = "feature_x"
+FEATURE_Y = "feature_y"
+FEATURE_Z = "feature_z"
+FEATURE_AVG_INTENSITY = "feature_avg_intensity"
+FEATURE_VOLUME = "feature_volume"
+FEATURE_AREA = "feature_area"
+FEATURE_AREA_RATIO = "feature_a_ratio"
+FEATURE_HEIGHT_RATIO = "feature_h_ratio"
+FEATURES = [FEATURE_X, FEATURE_Y, FEATURE_Z, FEATURE_AVG_INTENSITY, FEATURE_VOLUME, FEATURE_AREA, FEATURE_AREA_RATIO,
+            FEATURE_HEIGHT_RATIO]
+
 
 def get_dataset():
     """
@@ -19,9 +30,8 @@ def get_dataset():
             json_file = json.load(curr_file)
             curr_data = list()
             dataset['target'].append(json_file['label'])
-            curr_data.append(json_file['feature_x'])
-            curr_data.append(json_file['feature_y'])
-            curr_data.append(json_file['feature_z'])
+            for feature in FEATURES:
+                curr_data.append(json_file[feature])
             dataset['data'].append(curr_data)
 
     return dataset

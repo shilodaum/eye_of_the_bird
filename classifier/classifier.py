@@ -43,16 +43,7 @@ def svm_model():
     # poly_model = svm.SVC(kernel='poly', degree=3, C=C_const, decision_function_shape='ovo').fit(X_train, Y_train)
     # sig_model = svm.SVC(kernel='sigmoid', C=C_const, decision_function_shape='ovo').fit(X_train, Y_train)
 
-    """
-    h = 0.1
 
-    # create the meshgrid
-    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),np.arange(y_min, y_max, h))
-    # create the title that will be shown on the plot
-    titles = ['Linear kernel','RBF kernel','Polynomial kernel','Sigmoid kernel']
-    """
     # calculate sample weight on test set
 
     # rf_model = GradientBoostingClassifier(max_depth=4).fit(X_train, Y_train, sample_weight=Y_train_weights)
