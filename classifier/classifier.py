@@ -3,7 +3,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import svm, datasets
 import matplotlib.pyplot as plt
 import numpy as np
-
+from collections import Counter
+from joblib import dump, load
 from create_dataset import get_dataset
 import seaborn as sns
 from sklearn.utils.class_weight import compute_class_weight
@@ -19,6 +20,7 @@ def train_model():
 
     X = dataset['data']  # input, features
     y = dataset['target']  # output, labels
+    print(Counter(y))
 
     # split the dataset to train and test. 0.3/0.7
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.3, stratify=y)
@@ -46,3 +48,15 @@ def train_model():
     plt.ylabel('Actual')
     plt.tight_layout()
     plt.show()
+
+    dump(model, r'model\model.joblib')
+
+
+def predict():
+    """
+    This function predicts the label of a new sample.
+    """
+    model = load(r'model\model.joblib')
+    data = get_dataset()
+    prediction = model.predict(data['data'])
+    print(prediction)
