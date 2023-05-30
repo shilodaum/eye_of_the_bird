@@ -4,6 +4,10 @@ import laspy
 import numpy as np
 from extract import geometry
 import json
+from os.path import join as pjoin, isdir, isfile
+
+IN_FOLDER = r"../data/objects"
+OUT_FOLDER = r"../data/features"
 
 FEATURE_X = "feature_x"
 FEATURE_Y = "feature_y"
@@ -32,17 +36,16 @@ def extract_features_from_object(object_file_path, output_file_path, label=None)
 
 
 def main():
-    filepath = r"..\..\objects"
     i = 0
-    for obj_type in os.listdir(filepath):
-        if os.path.isdir(os.path.join(filepath, obj_type)):
-            obj_type_path = os.path.join(filepath, obj_type)
+    for obj_type in os.listdir(IN_FOLDER):
+        if isdir(pjoin(IN_FOLDER, obj_type)):
+            obj_type_path = pjoin(IN_FOLDER, obj_type)
             for obj in os.listdir(obj_type_path):
                 if obj.endswith(".las"):
-                    obj_path = os.path.join(obj_type_path, obj)
+                    obj_path = pjoin(obj_type_path, obj)
                     print(obj_path)
-                    extract_features_from_object(obj_path, "..\\..\\labeled_data\\obj" + str(i).zfill(3) + ".json",
-                                                 obj_type)
+                    json_path = f"obj{str(i).zfill(3)}.json"
+                    extract_features_from_object(obj_path, pjoin(OUT_FOLDER, json_path), obj_type)
                     i += 1
 
 
