@@ -1,11 +1,8 @@
-from classifier import svm_model
+from classifier import train_model
+
 
 def main():
-    """
-
-    :return:
-    """
-    svm_model()
+    train_model()
 
 
 if __name__ == '__main__':
