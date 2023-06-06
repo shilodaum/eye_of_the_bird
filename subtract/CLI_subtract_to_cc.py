@@ -63,44 +63,44 @@ def subtract_clouds(input_path: str = r"..\data\scans", output_path: str = r"..\
     """
 
     # Get the paths to the 2 clouds
-    clouds = glob.glob(pjoin(input_path, '*.las'))
-    cloud1_path = clouds[0]
-    cloud2_path = clouds[1]
+    reference_cloud_path = pjoin(input_path, "reference.las")
+    input_cloud_path = pjoin(input_path,
+                             "input.las")  # The input cloud is the one that will be subtracted from the reference cloud
 
     # Initialize
     cli = pycc.CloudCompareCLI()
     cmd = cli.new_command()
     cmd.silent()  # Disable console
-    cmd.log_file(output_path + r"\log.txt")
+    cmd.log_file(pjoin(output_path, "log.txt"))
     cmd.auto_save(False)
     cmd.cloud_export_format("LAS")
 
     if bounds is None:
-        bounds = get_intersection_bounds(cloud1_path, cloud2_path)
+        bounds = get_intersection_bounds(reference_cloud_path, input_cloud_path)
 
     shifted_bounds = [bounds[0] + global_shift[0], bounds[1] + global_shift[1], bounds[2] + global_shift[2],
                       bounds[3] + global_shift[0], bounds[4] + global_shift[1], bounds[5] + global_shift[2]]
     # Open 2 clouds
-    cmd.open(cloud1_path, global_shift=global_shift)
-    cmd.open(cloud2_path, global_shift=global_shift)
+    cmd.open(input_cloud_path, global_shift=global_shift)
+    cmd.open(reference_cloud_path, global_shift=global_shift)
 
     cmd.crop(*shifted_bounds)  # Crop the 2 clouds to the same area
     cmd.c2c_dist()  # Subtract the 2 clouds
-    cmd.save_clouds(pjoin(output_path, r"\subtracted.las"),
-                    pjoin(output_path, r"\reference.las"))  # Save the subtracted cloud
+    cmd.save_clouds(pjoin(output_path, "subtracted.las"),
+                    pjoin(output_path, "reference.las"))  # Save the subtracted cloud
     cmd.clear_clouds()  # Close all opened clouds
 
-    cmd.open(pjoin(output_path, r"\subtracted.las"), global_shift=global_shift)  # Open only the subtracted cloud
+    cmd.open(pjoin(output_path, "subtracted.las"), global_shift=global_shift)  # Open only the subtracted cloud
     cmd.filter_sf(0.1, 10)  # Filter the cloud by its calculated distance from its neighbors in the other scan
-    cmd.save_clouds(pjoin(output_path, r"\filtered.las"))  # Save filtered cloud
+    cmd.save_clouds(pjoin(output_path, "filtered.las"))  # Save filtered cloud
     cmd.auto_save(True)
     cmd.extract_cc(8, min_points_per_cloud)  # Extract Connected Components from the filtered cloud, and save them
     cmd.execute()
 
     # Delete temporary files
-    os.remove(pjoin(output_path, r"\subtracted.las"))
-    os.remove(pjoin(output_path, r"\reference.las"))
-    os.remove(pjoin(output_path, r"\filtered.las"))
+    os.remove(pjoin(output_path, "subtracted.las"))
+    os.remove(pjoin(output_path, "reference.las"))
+    os.remove(pjoin(output_path, "filtered.las"))
 
 
 def merge_clouds(clouds_path: str, output_path: str, merged_cloud_name: str,
