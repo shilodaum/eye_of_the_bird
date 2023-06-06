@@ -16,12 +16,17 @@ TRAIN_SIZE = 0.5
 
 
 def main():
-    # Usable functions:
+    print("Subtracting clouds, this may take a while...")
     # subtract_clouds(REFERENCE_CLOUD_PATH, NEW_CLOUD_PATH, OBJECTS_PATH, SHIFT, MIN_POINTS_PER_CLOUD, BOX)
-    # extract_all_objects(r"data\objects", r"data\features")
-    # train_model(r"data\features", TRAIN_SIZE)
-    pass
+    print("Label the objects in the folder 'data/objects' by moving them to the folders 'data/objects/<label>'")
+    print("Press enter when done")
+    input()
+    print("Extracting features")
+    extract_all_objects(r"data\objects", r"data\features")
+    print("Training model")
+    train_model(r"data\features", TRAIN_SIZE)
+    print("Done")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":    # Usable functions:
     main()
