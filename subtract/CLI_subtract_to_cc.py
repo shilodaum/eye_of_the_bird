@@ -49,23 +49,18 @@ def get_intersection_bounds(cloud1_path: str, cloud2_path: str) -> List[float]:
     return [min_x, min_y, min_z, max_x, max_y, max_z]
 
 
-def subtract_clouds(input_path: str = r"..\data\scans", output_path: str = r"..\data\objects",
-                    min_points_per_cloud: int = 500, global_shift: List[int] = SHIFT,
-                    bounds: List[int] = None) -> None:
+def subtract_clouds(reference_cloud_path: str, new_cloud_path: str, output_path: str, global_shift: List[int],
+                    min_points_per_cloud: int = 500, bounds: List[int] = None) -> None:
     """
     Subtract 2 clouds, filter the result, and extract connected components from the result.
-    :param input_path: path to the folder containing the 2 clouds to subtract
+    :param reference_cloud_path: path to the reference cloud
+    :param new_cloud_path: path to the cloud to be subtracted
     :param output_path: path to the folder to save the result in
     :param min_points_per_cloud: minimum number of points in a connected component to be saved
     :param global_shift: shift to apply to the clouds before subtracting
     :param bounds: bounds of the area to crop the clouds to. If None, the intersection bounds of the 2 clouds are used.
     :return: None. The result is saved in the output folder.
     """
-
-    # Get the paths to the 2 clouds
-    reference_cloud_path = pjoin(input_path, "reference.las")
-    input_cloud_path = pjoin(input_path,
-                             "input.las")  # The input cloud is the one that will be subtracted from the reference cloud
 
     # Initialize
     cli = pycc.CloudCompareCLI()
@@ -76,12 +71,12 @@ def subtract_clouds(input_path: str = r"..\data\scans", output_path: str = r"..\
     cmd.cloud_export_format("LAS")
 
     if bounds is None:
-        bounds = get_intersection_bounds(reference_cloud_path, input_cloud_path)
+        bounds = get_intersection_bounds(reference_cloud_path, new_cloud_path)
 
     shifted_bounds = [bounds[0] + global_shift[0], bounds[1] + global_shift[1], bounds[2] + global_shift[2],
                       bounds[3] + global_shift[0], bounds[4] + global_shift[1], bounds[5] + global_shift[2]]
     # Open 2 clouds
-    cmd.open(input_cloud_path, global_shift=global_shift)
+    cmd.open(new_cloud_path, global_shift=global_shift)
     cmd.open(reference_cloud_path, global_shift=global_shift)
 
     cmd.crop(*shifted_bounds)  # Crop the 2 clouds to the same area

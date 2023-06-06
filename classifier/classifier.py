@@ -10,7 +10,6 @@ import seaborn as sns
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import confusion_matrix, accuracy_score
 
-
 FEATURE_X = "feature_x"
 FEATURE_Y = "feature_y"
 FEATURE_Z = "feature_z"
@@ -20,10 +19,11 @@ FEATURE_AREA_RATIO = "feature_a_ratio"
 FEATURE_HEIGHT_RATIO = "feature_h_ratio"
 FEATURE_DENSITY = "feature_density"
 FEATURE_AERIAL_DENSITY = "feature_a_density"
-FEATURES = [FEATURE_X, FEATURE_Y, FEATURE_Z, FEATURE_VOLUME, FEATURE_AREA, FEATURE_AREA_RATIO, FEATURE_HEIGHT_RATIO, FEATURE_DENSITY, FEATURE_AERIAL_DENSITY]
+FEATURES = [FEATURE_X, FEATURE_Y, FEATURE_Z, FEATURE_VOLUME, FEATURE_AREA, FEATURE_AREA_RATIO, FEATURE_HEIGHT_RATIO,
+            FEATURE_DENSITY, FEATURE_AERIAL_DENSITY]
 
 
-def get_dataset():
+def get_dataset(input_folder: str) -> dict:
     """
     This function creates a dataset from the json files in the folder 'features'.
     :return: a dictionary with the data and the labels.
@@ -32,9 +32,8 @@ def get_dataset():
     dataset = dict()
     dataset['data'] = list()
     dataset['target'] = list()
-    path = os.path.join(os.path.dirname(os.getcwd()), r'data\features')
 
-    for file_name in glob.glob(os.path.join(path, '*.json')):
+    for file_name in glob.glob(os.path.join(input_folder, '*.json')):
         with open(file_name, encoding='utf-8', mode='r') as curr_file:
             json_file = json.load(curr_file)
             curr_data = list()
@@ -46,18 +45,19 @@ def get_dataset():
     return dataset
 
 
-def train_model():
+def train_model(input_folder: str, train_size: float = 0.3) -> None:
     """
     This function trains a random forest model on the dataset.
     :return: None
     """
-    dataset = get_dataset()  # returns the dataset. the data is saved under 'data', the labels are saved under 'target'
+    dataset = get_dataset(
+        input_folder)  # returns the dataset. the data is saved under 'data', the labels are saved under 'target'
 
     X = dataset['data']  # input, features
     y = dataset['target']  # output, labels
 
     # split the dataset to train and test. 0.3/0.7
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.3, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size, stratify=y)
 
     # calculate sample weight on train set
     labels = list(np.unique(y_train))
@@ -85,7 +85,7 @@ def train_model():
 
 
 def main():
-    train_model()
+    pass
 
 
 if __name__ == '__main__':

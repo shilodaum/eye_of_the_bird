@@ -6,9 +6,6 @@ from extract import geometry
 import json
 from os.path import join as pjoin, isdir, isfile
 
-IN_FOLDER = r"../data/objects"
-OUT_FOLDER = r"../data/features"
-
 FEATURE_X = "feature_x"
 FEATURE_Y = "feature_y"
 FEATURE_Z = "feature_z"
@@ -61,16 +58,16 @@ def extract_features_from_object(object_file_path, output_file_path, label=None)
         json.dump(data, f, indent=4)
 
 
-def main():
+def extract_all_objects(input_folder, output_folder):
     """
     Extract features from all the objects in the input folder and save them to the output folder
     """
     # counter
     file_counter = 0
-    for obj_type in os.listdir(IN_FOLDER):
+    for obj_type in os.listdir(input_folder):
         # iterate all folders
-        if isdir(pjoin(IN_FOLDER, obj_type)):
-            obj_type_path = pjoin(IN_FOLDER, obj_type)
+        if isdir(pjoin(input_folder, obj_type)):
+            obj_type_path = pjoin(input_folder, obj_type)
             # iterate all files
             for obj in os.listdir(obj_type_path):
                 if obj.endswith(".las"):
@@ -78,9 +75,9 @@ def main():
                     obj_path = pjoin(obj_type_path, obj)
                     print(obj_path)
                     json_path = f"obj{str(file_counter).zfill(3)}.json"
-                    extract_features_from_object(obj_path, pjoin(OUT_FOLDER, json_path), obj_type)
+                    extract_features_from_object(obj_path, pjoin(output_folder, json_path), obj_type)
                     file_counter += 1
 
 
 if __name__ == '__main__':
-    main()
+    extract_all_objects()
